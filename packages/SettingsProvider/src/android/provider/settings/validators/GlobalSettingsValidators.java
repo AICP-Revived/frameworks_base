@@ -473,5 +473,6 @@ public class GlobalSettingsValidators {
                                 String.valueOf(
                                         Global.Wearable.STATUS_TRAY_CONFIGURATION_SYSTEM_HIDDEN)
                         }));
+        VALIDATORS.put(Global.LOCKSCREEN_ENABLE_POWER_MENU, BOOLEAN_VALIDATOR);
     }
 }
