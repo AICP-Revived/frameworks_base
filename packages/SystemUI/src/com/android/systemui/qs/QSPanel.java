@@ -62,7 +62,8 @@ import java.util.Collection;
 /** View that represents the quick settings tile panel. **/
 public class QSPanel extends LinearLayout implements Tunable, Callback {
 
-    public static final String QS_SHOW_BRIGHTNESS = "qs_show_brightness";
+    public static final String QS_SHOW_BRIGHTNESS_SLIDER = "qs_show_brightness";
+    public static final String QS_SHOW_AUTO_BRIGHTNESS = "qs_show_auto_brightness";
 
     protected final Context mContext;
     protected final ArrayList<TileRecord> mRecords = new ArrayList<TileRecord>();
@@ -76,6 +77,7 @@ public class QSPanel extends LinearLayout implements Tunable, Callback {
     private int mBrightnessPaddingTop;
     protected boolean mExpanded;
     protected boolean mListening;
+    private boolean mIsAutomaticBrightnessAvailable = false;
 
     private Callback mCallback;
     private BrightnessController mBrightnessController;
@@ -134,16 +136,9 @@ public class QSPanel extends LinearLayout implements Tunable, Callback {
                 R.layout.qs_paged_tile_layout, this, false);
         mTileLayout.setListening(mListening);
         addView((View) mTileLayout);
-        if (getResources().getBoolean(
-                com.android.internal.R.bool.config_automatic_brightness_available)) {
-            if (mBrightnessIconPosition) {
-                ((ImageView) findViewById(R.id.brightness_icon)).setVisibility(View.VISIBLE);
-                ((ImageView) findViewById(R.id.brightness_icon_left)).setVisibility(View.GONE);
-            } else {
-                ((ImageView) findViewById(R.id.brightness_icon)).setVisibility(View.GONE);
-                ((ImageView) findViewById(R.id.brightness_icon_left)).setVisibility(View.VISIBLE);
-            }
-        }
+
+        mIsAutomaticBrightnessAvailable = getResources().getBoolean(
+                com.android.internal.R.bool.config_automatic_brightness_available);
     }
 
     public boolean isShowingCustomize() {
@@ -153,7 +148,9 @@ public class QSPanel extends LinearLayout implements Tunable, Callback {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        TunerService.get(mContext).addTunable(this, QS_SHOW_BRIGHTNESS);
+        TunerService.get(mContext).addTunable(this,
+                QS_SHOW_BRIGHTNESS_SLIDER,
+                QS_SHOW_AUTO_BRIGHTNESS);
         if (mHost != null) {
             setTiles(mHost.getTiles());
         }
@@ -176,12 +173,21 @@ public class QSPanel extends LinearLayout implements Tunable, Callback {
 
     @Override
     public void onTuningChanged(String key, String newValue) {
-        if (QS_SHOW_BRIGHTNESS.equals(key)) {
+        if (QS_SHOW_BRIGHTNESS_SLIDER.equals(key)) {
             mBrightnessView.setVisibility(newValue == null || Integer.parseInt(newValue) != 0
                     ? VISIBLE : GONE);
             if (mMirrorAutoBrightnessView != null) {
                 mMirrorAutoBrightnessView.setVisibility(newValue == null ||
                         Integer.parseInt(newValue) != 0 ? INVISIBLE : GONE);
+            }
+        } else if (QS_SHOW_AUTO_BRIGHTNESS.equals(key) && mIsAutomaticBrightnessAvailable) {
+            boolean show = newValue == null || Integer.parseInt(newValue) != 0;
+            ImageView activeIcon = mBrightnessIconPosition ? mBrightnessIcon : mBrightnessIconLeft;
+            ImageView inactiveIcon = mBrightnessIconPosition ? mBrightnessIconLeft : mBrightnessIcon;
+            activeIcon.setVisibility(show ? VISIBLE : GONE);
+            inactiveIcon.setVisibility(GONE);
+            if (mMirrorAutoBrightnessView != null) {
+                mMirrorAutoBrightnessView.setVisibility(show ? INVISIBLE : GONE);
             }
         }
     }
@@ -222,7 +228,8 @@ public class QSPanel extends LinearLayout implements Tunable, Callback {
         ToggleSlider brightnessSlider = (ToggleSlider) findViewById(R.id.brightness_slider);
         ToggleSlider mirror = (ToggleSlider) c.getMirror().findViewById(R.id.brightness_slider);
         mMirrorAutoBrightnessView = (ImageView) c.getMirror().findViewById(R.id.brightness_icon);
-        mMirrorAutoBrightnessView.setVisibility(mAutoBrightnessView.getVisibility()
+        ImageView activeBrightnessIcon = mBrightnessIconPosition ? mBrightnessIcon : mBrightnessIconLeft;
+        mMirrorAutoBrightnessView.setVisibility(activeBrightnessIcon.getVisibility()
                     == View.VISIBLE ? View.INVISIBLE : View.GONE);
         brightnessSlider.setMirror(mirror);
         brightnessSlider.setMirrorController(c);
