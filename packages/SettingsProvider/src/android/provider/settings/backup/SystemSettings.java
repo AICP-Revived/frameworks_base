@@ -137,8 +137,8 @@ public class SystemSettings {
                 Settings.System.LOCKSCREEN_MAX_NOTIF_CONFIG,
                 Settings.System.TRANSPARENT_POWER_MENU,
                 Settings.System.TRANSPARENT_POWER_DIALOG_DIM,
-                Settings.System.POWER_MENU_ANIMATIONS
-
+                Settings.System.POWER_MENU_ANIMATIONS,
+                Settings.System.LOCKSCREEN_BATTERY_INFO
         ));
         if (Flags.backUpSmoothDisplayAndForcePeakRefreshRate()) {
             settings.add(Settings.System.PEAK_REFRESH_RATE);
