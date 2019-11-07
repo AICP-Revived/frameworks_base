@@ -3205,51 +3205,83 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 switch(Settings.System.getInt(mContext.getContentResolver(), Settings.System.TOAST_ANIMATION, 1)) {
                 case 0:
                         attrs.windowAnimations = -1;
+                        // Toasts can't be clickable
+                        attrs.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
                         break;
                 case 1:
                         attrs.windowAnimations = com.android.internal.R.style.Animation_Toast;
+                        // Toasts can't be clickable
+                        attrs.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
                         break;
                 case 2:
                         attrs.windowAnimations = com.android.internal.R.style.Animation_Toast_Fade;
+                        // Toasts can't be clickable
+                        attrs.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
                         break;
                 case 3:
                         attrs.windowAnimations = com.android.internal.R.style.Animation_Toast_SlideRight;
+                        // Toasts can't be clickable
+                        attrs.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
                         break;
                 case 4:
                         attrs.windowAnimations = com.android.internal.R.style.Animation_Toast_SlideLeft;
+                        // Toasts can't be clickable
+                        attrs.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
                         break;
                 case 5:
                         attrs.windowAnimations = com.android.internal.R.style.Animation_Toast_Xylon;
+                        // Toasts can't be clickable
+                        attrs.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
                         break;
                 case 6:
                         attrs.windowAnimations = com.android.internal.R.style.Animation_Toast_Toko;
+                        // Toasts can't be clickable
+                        attrs.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
                         break;
                 case 7:
                         attrs.windowAnimations = com.android.internal.R.style.Animation_Toast_Tn;
+                        // Toasts can't be clickable
+                        attrs.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
                         break;
                 case 8:
                         attrs.windowAnimations = com.android.internal.R.style.Animation_Toast_Honami;
+                        // Toasts can't be clickable
+                        attrs.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
                         break;
                 case 9:
                         attrs.windowAnimations = com.android.internal.R.style.Animation_Toast_FastFade;
+                        // Toasts can't be clickable
+                        attrs.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
                         break;
                 case 10:
                         attrs.windowAnimations = com.android.internal.R.style.Animation_Toast_GrowFade;
+                        // Toasts can't be clickable
+                        attrs.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
                         break;
                 case 11:
                         attrs.windowAnimations = com.android.internal.R.style.Animation_Toast_GrowFadeCenter;
+                        // Toasts can't be clickable
+                        attrs.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
                         break;
                 case 12:
                         attrs.windowAnimations = com.android.internal.R.style.Animation_Toast_GrowFadeBottom;
+                        // Toasts can't be clickable
+                        attrs.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
                         break;
                 case 13:
                         attrs.windowAnimations = com.android.internal.R.style.Animation_Toast_Translucent;
+                        // Toasts can't be clickable
+                        attrs.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
                         break;
                 case 14:
                         attrs.windowAnimations = com.android.internal.R.style.Animation_Toast_SlideLeftRight;
+                        // Toasts can't be clickable
+                        attrs.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
                         break;
                 case 15:
                         attrs.windowAnimations = com.android.internal.R.style.Animation_Toast_SlideRightLeft;
+                        // Toasts can't be clickable
+                        attrs.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
                         break;
         }
     }
