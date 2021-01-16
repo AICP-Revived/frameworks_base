@@ -1087,6 +1087,9 @@ public class GnssLocationProvider implements LocationProviderInterface {
     }
 
     private void handleUpdateLocation(Location location) {
+        if (location.isFromMockProvider()) {
+            return;
+        }
         if (location.hasAccuracy()) {
             native_inject_location(location.getLatitude(), location.getLongitude(),
                     location.getAccuracy());
