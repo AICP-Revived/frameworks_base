@@ -6537,6 +6537,18 @@ public final class Settings {
          */
 
         /**
+         * enable custom lockscreen max notifications config
+         * @hide
+         */
+        public static final String LOCK_SCREEN_CUSTOM_NOTIF = "lock_screen_custom_notif";
+
+        /**
+         * custom lockscreen max notification config
+         * @hide
+         */
+        public static final String LOCKSCREEN_MAX_NOTIF_CONFIG = "lockscreen_max_notif_config";
+
+        /**
          * Keys we no longer back up under the current schema, but want to continue to
          * process when restoring historical backup datasets.
          *
@@ -6687,6 +6699,8 @@ public final class Settings {
             PRIVATE_SETTINGS.add(ON_THE_GO_CAMERA);
             PRIVATE_SETTINGS.add(VOLUME_DIALOG_TIMEOUT);
             PRIVATE_SETTINGS.add(CHARGING_ANIMATION);
+            PRIVATE_SETTINGS.add(LOCK_SCREEN_CUSTOM_NOTIF);
+            PRIVATE_SETTINGS.add(LOCKSCREEN_MAX_NOTIF_CONFIG);
         }
 
         /**

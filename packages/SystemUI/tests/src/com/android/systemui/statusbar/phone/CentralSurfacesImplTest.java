@@ -279,6 +279,7 @@ public class CentralSurfacesImplTest extends SysuiTestCase {
     @Mock private HeadsUpManager mHeadsUpManager;
     @Mock private NotificationPanelViewController mNotificationPanelViewController;
     @Mock private ShadeLogger mShadeLogger;
+    @Mock private NotificationPanelViewController mNewNotificationPanelViewController;
     @Mock private NotificationPanelView mNotificationPanelView;
     @Mock private QuickSettingsController mQuickSettingsController;
     @Mock private IStatusBarService mBarService;
@@ -568,6 +569,7 @@ public class CentralSurfacesImplTest extends SysuiTestCase {
                 new JavaAdapter(mTestScope),
                 mUiBgExecutor,
                 mNotificationPanelViewController,
+                mNewNotificationPanelViewController,
                 mNotificationMediaManager,
                 mLockscreenUserManager,
                 mRemoteInputManager,
@@ -625,6 +627,7 @@ public class CentralSurfacesImplTest extends SysuiTestCase {
                 mLockscreenTransitionController,
                 mFeatureFlags,
                 mKeyguardUnlockAnimationController,
+                new Handler(TestableLooper.get(this).getLooper()),
                 mMainExecutor,
                 mMessageRouter,
                 mWallpaperManager,
