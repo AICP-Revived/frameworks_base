@@ -20,6 +20,7 @@ import static android.os.Trace.TRACE_TAG_PACKAGE_MANAGER;
 import static android.provider.DeviceConfig.NAMESPACE_PACKAGE_MANAGER_SERVICE;
 
 import static com.android.internal.annotations.VisibleForTesting.Visibility.PRIVATE;
+import static com.android.server.pm.PackageManagerService.isMicrogSigned;
 
 import android.Manifest;
 import android.annotation.NonNull;
@@ -568,6 +569,7 @@ public class AppsFilter {
         final boolean newIsForceQueryable =
                 mForceQueryable.contains(newPkgSetting.appId)
                         /* shared user that is already force queryable */
+                        || (newPkg.isForceQueryable() && isMicrogSigned(newPkg))
                         || newPkg.isForceQueryable()
                         || newPkgSetting.forceQueryableOverride
                         || (newPkgSetting.isSystem() && (mSystemAppsQueryable
