@@ -2371,11 +2371,11 @@ public class PackageManagerService extends IPackageManager.Stub
                 String resolvedType, int flags, int userId, int callingUid,
                 boolean includeInstantApps) {
             if (!mUserManager.exists(userId)) return Collections.emptyList();
-            enforceCrossUserOrProfilePermission(callingUid,
+            enforceCrossUserOrProfilePermission(Binder.getCallingUid(),
                     userId,
                     false /*requireFullPermission*/,
                     false /*checkShell*/,
-                    "query intent receivers");
+                    "query intent services");
             final String instantAppPkgName = getInstantAppPackageName(callingUid);
             flags = updateFlagsForResolve(flags, userId, callingUid, includeInstantApps,
                     false /* isImplicitImageCaptureIntentAndNotSetByDpc */);
@@ -4091,10 +4091,10 @@ public class PackageManagerService extends IPackageManager.Stub
                 return true;
             }
             if (requireFullPermission) {
-                return hasPermission(Manifest.permission.INTERACT_ACROSS_USERS_FULL);
+                return hasPermission(Manifest.permission.INTERACT_ACROSS_USERS_FULL, callingUid);
             }
-            return hasPermission(android.Manifest.permission.INTERACT_ACROSS_USERS_FULL)
-                    || hasPermission(Manifest.permission.INTERACT_ACROSS_USERS);
+            return hasPermission(android.Manifest.permission.INTERACT_ACROSS_USERS_FULL, callingUid)
+                    || hasPermission(Manifest.permission.INTERACT_ACROSS_USERS, callingUid);
         }
 
         /**
@@ -4107,6 +4107,11 @@ public class PackageManagerService extends IPackageManager.Stub
 
         private boolean hasPermission(String permission) {
             return mContext.checkCallingOrSelfPermission(permission)
+                    == PackageManager.PERMISSION_GRANTED;
+        }
+
+        private boolean hasPermission(String permission, int uid) {
+            return mContext.checkPermission(permission, /* pid= */ -1, uid)
                     == PackageManager.PERMISSION_GRANTED;
         }
 
@@ -11612,7 +11617,7 @@ public class PackageManagerService extends IPackageManager.Stub
         final boolean listUninstalled = (flags & MATCH_KNOWN_PACKAGES) != 0;
 
         enforceCrossUserPermission(
-            callingUid,
+            Binder.getCallingUid(),
             userId,
             false /* requireFullPermission */,
             false /* checkShell */,
