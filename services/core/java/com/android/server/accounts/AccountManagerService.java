@@ -4284,6 +4284,8 @@ public class AccountManagerService
                     Log.e(TAG, String.format(tmpl, activityName, pkgName, mAccountType));
                     return false;
                 }
+                intent.setComponent(targetActivityInfo.getComponentName());
+                bundle.putParcelable(AccountManager.KEY_INTENT, intent);
                 return true;
             } finally {
                 Binder.restoreCallingIdentity(bid);
