@@ -974,6 +974,11 @@ public class DisplayPolicy {
                         (int) attrs.hideTimeoutMilliseconds,
                         AccessibilityManager.FLAG_CONTENT_TEXT);
 
+                // Do not allow untrusted toast to customize animation.
+                if (!win.mSession.mCanAddInternalSystemWindow) {
+                    attrs.windowAnimations = R.style.Animation_Toast;
+                }
+
                 switch(Settings.System.getIntForUser(mContext.getContentResolver(),
                         Settings.System.TOAST_ANIMATION, 1, UserHandle.USER_CURRENT)) {
                     case 0:
