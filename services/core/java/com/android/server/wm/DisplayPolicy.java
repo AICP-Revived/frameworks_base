@@ -992,6 +992,10 @@ public class DisplayPolicy {
                         attrs.windowAnimations = com.android.internal.R.style.Animation_Toast_SlideRightLeft;
                         break;
                 }
+                // Do not allow untrusted toast to customize animation.
+                if (!win.mSession.mCanAddInternalSystemWindow) {
+                    attrs.windowAnimations = R.style.Animation_Toast;
+                }
                 break;
             case TYPE_BASE_APPLICATION:
 
