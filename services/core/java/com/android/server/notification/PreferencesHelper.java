@@ -48,6 +48,7 @@ import com.android.internal.annotations.VisibleForTesting;
 import com.android.internal.logging.MetricsLogger;
 import com.android.internal.util.Preconditions;
 import com.android.internal.util.XmlUtils;
+import com.android.server.uri.UriGrantsManagerInternal;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -133,6 +134,7 @@ public class PreferencesHelper implements RankingConfig {
     private final PackageManager mPm;
     private final RankingHandler mRankingHandler;
     private final ZenModeHelper mZenModeHelper;
+    private final UriGrantsManagerInternal mUgmInternal;
 
     private SparseBooleanArray mBadgingEnabled;
     private boolean mBubblesEnabled = DEFAULT_ALLOW_BUBBLE;
@@ -140,11 +142,12 @@ public class PreferencesHelper implements RankingConfig {
     private boolean mHideSilentStatusBarIcons = DEFAULT_HIDE_SILENT_STATUS_BAR_ICONS;
 
     public PreferencesHelper(Context context, PackageManager pm, RankingHandler rankingHandler,
-            ZenModeHelper zenHelper) {
+            ZenModeHelper zenHelper, UriGrantsManagerInternal ugmInternal) {
         mContext = context;
         mZenModeHelper = zenHelper;
         mRankingHandler = rankingHandler;
         mPm = pm;
+        mUgmInternal = ugmInternal;
 
         updateBadgingEnabled();
         updateBubblesEnabled();
@@ -738,6 +741,18 @@ public class PreferencesHelper implements RankingConfig {
                 channel.setLockscreenVisibility(r.visibility);
             }
             clearLockedFieldsLocked(channel);
+
+            // Verify that the app has permission to read the sound Uri
+            // Only check for new channels, as regular apps can only set sound
+            // before creating. See: {@link NotificationChannel#setSound}
+            try {
+                PermissionHelper.grantUriPermission(mUgmInternal, channel.getSound(), uid);
+            } catch (SecurityException e) {
+                // Fallback to default Uri to prevent app crashes
+                channel.setSound(Settings.System.DEFAULT_NOTIFICATION_URI,
+                        Notification.AUDIO_ATTRIBUTES_DEFAULT);
+            }
+
             channel.setImportanceLockedByOEM(r.oemLockedImportance);
             if (!channel.isImportanceLockedByOEM()) {
                 if (r.futureOemLockedChannels.remove(channel.getId())) {
