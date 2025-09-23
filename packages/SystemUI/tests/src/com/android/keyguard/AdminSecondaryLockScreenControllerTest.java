@@ -46,7 +46,6 @@ import android.widget.FrameLayout;
 
 import androidx.test.filters.SmallTest;
 
-import com.android.keyguard.KeyguardSecurityModel.SecurityMode;
 import com.android.systemui.SysuiTestCase;
 
 import org.junit.After;
@@ -192,7 +191,7 @@ public class AdminSecondaryLockScreenControllerTest extends SysuiTestCase {
 
     private void verifyViewDismissed(SurfaceView v) throws Exception {
         verify(mParent).removeView(v);
-        verify(mKeyguardCallback).dismiss(true, TARGET_USER_ID, true, SecurityMode.Invalid);
+        verify(mKeyguardCallback).dismiss(true, TARGET_USER_ID, true);
         assertThat(mContext.isBound(mComponentName)).isFalse();
     }
 }

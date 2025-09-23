@@ -87,7 +87,7 @@ public class KeyguardHostView extends FrameLayout implements SecurityCallback {
                         Log.i(TAG, "TrustAgent dismissed Keyguard.");
                     }
                     dismiss(false /* authenticated */, userId,
-                            /* bypassSecondaryLockScreen */ false, SecurityMode.Invalid);
+                            /* bypassSecondaryLockScreen */ false);
                 } else {
                     mViewMediatorCallback.playTrustedSound();
                 }
@@ -193,13 +193,12 @@ public class KeyguardHostView extends FrameLayout implements SecurityCallback {
      * @return True if the keyguard is done.
      */
     public boolean dismiss(int targetUserId) {
-        return dismiss(false, targetUserId, false, getCurrentSecurityMode());
+        return dismiss(false, targetUserId, false);
     }
 
     public boolean handleBackKey() {
         if (mSecurityContainer.getCurrentSecuritySelection() != SecurityMode.None) {
-            mSecurityContainer.dismiss(false, KeyguardUpdateMonitor.getCurrentUser(),
-                getCurrentSecurityMode());
+            mSecurityContainer.dismiss(false, KeyguardUpdateMonitor.getCurrentUser());
             return true;
         }
         return false;
@@ -211,9 +210,9 @@ public class KeyguardHostView extends FrameLayout implements SecurityCallback {
 
     @Override
     public boolean dismiss(boolean authenticated, int targetUserId,
-            boolean bypassSecondaryLockScreen, SecurityMode expectedSecurityMode) {
+            boolean bypassSecondaryLockScreen) {
         return mSecurityContainer.showNextSecurityScreenOrFinish(authenticated, targetUserId,
-                bypassSecondaryLockScreen, expectedSecurityMode);
+                bypassSecondaryLockScreen);
     }
 
     /**

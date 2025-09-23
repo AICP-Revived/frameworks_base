@@ -26,7 +26,6 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
-import com.android.keyguard.KeyguardSecurityModel.SecurityMode;
 import com.android.internal.widget.LockPatternUtils;
 import com.android.internal.widget.LockPatternUtils.RequestThrottledException;
 import com.android.keyguard.PasswordTextView.QuickUnlockListener;
@@ -294,10 +293,5 @@ public class KeyguardPINView extends KeyguardPinBasedInputView {
             // do nothing
         }
         return pinPasswordLength >= 4 ? pinPasswordLength : -1;
-    }
-
-    @Override
-    public SecurityMode getSecurityMode() {
-        return SecurityMode.PIN;
     }
 }

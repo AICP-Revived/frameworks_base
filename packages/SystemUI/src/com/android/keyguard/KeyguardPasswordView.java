@@ -42,7 +42,6 @@ import com.android.internal.widget.LockPatternUtils;
 import com.android.internal.widget.LockscreenCredential;
 import com.android.internal.widget.LockPatternUtils.RequestThrottledException;
 import com.android.internal.widget.TextViewInputDisabler;
-import com.android.keyguard.KeyguardSecurityModel.SecurityMode;
 import com.android.systemui.R;
 
 import java.util.List;
@@ -442,10 +441,5 @@ public class KeyguardPasswordView extends KeyguardAbsKeyInputView
             // do nothing
         }
         return pinPasswordLength >= 4 ? pinPasswordLength : -1;
-    }
-
-    @Override
-    public SecurityMode getSecurityMode() {
-        return SecurityMode.Password;
     }
 }
