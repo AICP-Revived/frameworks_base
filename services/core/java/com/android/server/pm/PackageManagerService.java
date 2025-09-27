@@ -4459,18 +4459,6 @@ public class PackageManagerService extends IPackageManager.Stub
             PackageInfo packageInfo = mayFakeSignature(p, PackageInfoUtils.generate(p, gids, flags,
                 ps.firstInstallTime, ps.lastUpdateTime, permissions, state, userId, ps),
                 permissions);
-                try {
-                    packageInfo.signingInfo = new SigningInfo(
-                            new SigningDetails(
-                                    packageInfo.signatures,
-                                    SigningDetails.SignatureSchemeVersion.SIGNING_BLOCK_V3,
-                                    PackageParser.toSigningKeys(packageInfo.signatures),
-                                    null
-                            )
-                    );
-                } catch (CertificateException e) {
-                    Slog.e(TAG, "Caught an exception when creating signing keys: ", e);
-                }
 
             if (packageInfo == null) {
                 return null;
