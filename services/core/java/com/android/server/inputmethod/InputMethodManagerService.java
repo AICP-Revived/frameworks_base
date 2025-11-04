@@ -137,6 +137,7 @@ import com.android.internal.inputmethod.IInputContentUriToken;
 import com.android.internal.inputmethod.IInputMethodPrivilegedOperations;
 import com.android.internal.inputmethod.InputMethodDebug;
 import com.android.internal.inputmethod.InputMethodInfoSafeList;
+import com.android.internal.inputmethod.InputMethodSubtypeSafeList;
 import com.android.internal.inputmethod.SoftInputShowHideReason;
 import com.android.internal.inputmethod.StartInputFlags;
 import com.android.internal.inputmethod.StartInputReason;
@@ -1976,7 +1977,7 @@ public class InputMethodManagerService extends IInputMethodManager.Stub
             final int[] resolvedUserIds = InputMethodUtils.resolveUserId(userId,
                     mSettings.getCurrentUserId(), null);
             if (resolvedUserIds.length != 1) {
-                return InputMethodInfoSafeList.empty();
+                return InputMethodInfoSafeList.create(null);
             }
             final long ident = Binder.clearCallingIdentity();
             try {
@@ -1998,7 +1999,7 @@ public class InputMethodManagerService extends IInputMethodManager.Stub
             final int[] resolvedUserIds = InputMethodUtils.resolveUserId(userId,
                     mSettings.getCurrentUserId(), null);
             if (resolvedUserIds.length != 1) {
-                return InputMethodInfoSafeList.empty();
+                return InputMethodInfoSafeList.create(null);
             }
             final long ident = Binder.clearCallingIdentity();
             try {
@@ -2163,20 +2164,22 @@ public class InputMethodManagerService extends IInputMethodManager.Stub
      * @param imiId if null, returns enabled subtypes for the current imi
      * @return enabled subtypes of the specified imi
      */
+    @NonNull
     @Override
-    public List<InputMethodSubtype> getEnabledInputMethodSubtypeList(String imiId,
+    public InputMethodSubtypeSafeList getEnabledInputMethodSubtypeList(String imiId,
             boolean allowsImplicitlySelectedSubtypes) {
         final int callingUserId = UserHandle.getCallingUserId();
         synchronized (mMethodMap) {
             final int[] resolvedUserIds = InputMethodUtils.resolveUserId(callingUserId,
                     mSettings.getCurrentUserId(), null);
             if (resolvedUserIds.length != 1) {
-                return Collections.emptyList();
+                return InputMethodSubtypeSafeList.create(null);
             }
             final long ident = Binder.clearCallingIdentity();
             try {
-                return getEnabledInputMethodSubtypeListLocked(imiId,
-                        allowsImplicitlySelectedSubtypes, resolvedUserIds[0]);
+                return InputMethodSubtypeSafeList.create(
+                        getEnabledInputMethodSubtypeListLocked(imiId,
+                                allowsImplicitlySelectedSubtypes, resolvedUserIds[0]));
             } finally {
                 Binder.restoreCallingIdentity(ident);
             }
