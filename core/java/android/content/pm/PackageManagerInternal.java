@@ -1017,10 +1017,4 @@ public abstract class PackageManagerInternal {
      * that b/141413692 is not reproducible on Q.
      */
     public abstract void userRemovedForTest();
-
-    /**
-     * Get installed SDK version of the package
-     * @param pkg package for which to retrieve the installed sdk version
-     */
-    public abstract int getInstalledSdkVersion(PackageParser.Package pkg);
 }
