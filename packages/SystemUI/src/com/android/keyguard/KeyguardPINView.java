@@ -232,7 +232,7 @@ public class KeyguardPINView extends KeyguardPinBasedInputView {
             if (password.length() > MINIMUM_PASSWORD_LENGTH_BEFORE_REPORT
                     && kpvCheckPassword(password)) {
                 mCallback.reportUnlockAttempt(userId, true, 0);
-                mCallback.dismiss(true, userId);
+                mCallback.dismiss(true, userId, getSecurityMode());
                 resetPasswordText(true, true);
             }
         }
